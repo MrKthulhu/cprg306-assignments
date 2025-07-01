@@ -3,11 +3,17 @@
 import { useState } from 'react';
 import items from './items.json';
 import ItemList from './item-list';
+import NewItem from './new-item';
 
 export default function Page() {
   const [sortBy, setSortBy] = useState("category");
+  const [itemsList, setItemsList] = useState(items);
 
-  const sortedItems = [...items].sort((a, b) => {
+  function handleAddItem(newItem) {
+    setItemsList((prevItems) => [...prevItems, newItem]);
+  }
+
+  const sortedItems = [...itemsList].sort((a, b) => {
     if (sortBy === "name") {
       return a.name.localeCompare(b.name);
     } else if (sortBy === "category") {
@@ -42,6 +48,10 @@ export default function Page() {
               Category
             </button>
           </div>
+        </div>
+
+        <div className="mb-10">
+          <NewItem onAddItem={handleAddItem} />
         </div>
 
         <ItemList items={sortedItems} />
